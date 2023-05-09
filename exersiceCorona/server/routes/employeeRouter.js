@@ -7,8 +7,10 @@ router.get("/",async function(req,res){
 return res.status(200).json(data)
 })
 
-router.get("/id",async function(req,res){
-    let ID=req.params.id
+router.get('/:id',async function(req,res){
+    console.log("I am in router ")
+    const ID=req.params.id
+    console.log("req=",req.params)
     console.log(ID);
     let data = await EmployeeBL.getEmployee(ID)
 return res.status(200).json(data)
@@ -16,7 +18,7 @@ return res.status(200).json(data)
 
 router.post("/add/",async function(req,res){
     let data = await EmployeeBL.addEmployee(req.body)
-    console.log(data+" ------------------------------------");
+    console.log(data + " ------------------------------------");
 return res.status(200).json(data)
 })
 

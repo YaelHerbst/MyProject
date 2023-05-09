@@ -42,7 +42,7 @@
 //       console.log(member.dateOfVaccines.length);
 //       member.makerOfVaccines.push(null);
 //     });
-    
+
 //   member.save((e) => {
 //     if (e) console.log(e + " ???????????");
 //   });
@@ -99,59 +99,86 @@
 const EmployeeModel = require("./employeeModel");
 
 const getEmployees = () => {
-  return EmployeeModel.find().exec()
-    .catch((err) => {
-      // Handle the error here
-      console.error("Error retrieving employees:", err);
-      throw err; // Optional: rethrow the error to propagate it further
-    });
+    return EmployeeModel.find().exec()
+        .catch((err) => {
+            // Handle the error here
+            console.error("Error retrieving employees:", err);
+            throw err; // Optional: rethrow the error to propagate it further
+        });
 
 
-// return new Promise((resolve, reject) => {
-//     EmployeeModel.find({}, (err, data) => {
-//       err && reject(err);
-//       data && resolve(data);
-//     });
-//   });
+    // return new Promise((resolve, reject) => {
+    //     EmployeeModel.find({}, (err, data) => {
+    //       err && reject(err);
+    //       data && resolve(data);
+    //     });
+    //   });
 };
 
-const getEmployee = (ID) => {
-  return EmployeeModel.findById(ID).exec()
-    .catch((err) => {
-      // Handle the error here
-      console.error("Error retrieving employee:", err);
-      throw err; // Optional: rethrow the error to propagate it further
-    });
-};
-
-const addEmployee = async(obj) => {
-  let employee = new EmployeeModel({
-    fullName: obj.fullName,
-    id: obj.id,
-    city: obj.city,
-    street: obj.street,
-    houseNumber: obj.houseNumber,
-    DateOfBirth: obj.DateOfBirth,
-    phone: obj.phone,
-    cellphone: obj.cellphone,
-    vaccinations: obj.vaccinations,
-    dateOfPositiveResult: obj.dateOfPositiveResult,
-    dateOfRecovery: obj.dateOfRecovery,
-  });
-  if (employee.vaccinations.length < 4) {
-    for (let i = employee.vaccinations.length; i < 4; i++) {
-      employee.vaccinations.push({
-        dateReceived: null,
-        creator: null,
-      });
+const getEmployee = async (ID) => {
+    console.log("I am in getEmployee ");
+    try {
+        let employee = await EmployeeModel.findById(ID)
+        return employee
+    } catch (error) {
+        console.log(error);
     }
-  }
-  try {
-    await employee.save();
-    console.log("the new employee added")
-  } catch (err) {
-    console.log(err);
-  }
+
+};
+// , (err, employee) => {
+// return
+// if (err) {
+//   console.error(err);
+//   return res.status(500).send('Internal Server Error');
+// }
+
+// if (!employee) {
+//   return res.status(404).send('Employee not found');
+// }
+
+// Employee found, proceed with further processing
+// res.send(employee);
+//   }).exec().then((employee) => {
+//     // Handle the found employee here
+//     console.log("Found employee:", employee);
+//     return employee;
+//   })
+//     .catch((err) => {
+//       // Handle the error here
+//       console.error("Error retrieving employee:", err);
+//       throw err; // Optional: rethrow the error to propagate it further
+//     });
+
+
+const addEmployee = async (obj) => {
+    let employee = new EmployeeModel({
+        fullName: obj.fullName,
+        id: obj.id,
+        city: obj.city,
+        street: obj.street,
+        houseNumber: obj.houseNumber,
+        DateOfBirth: obj.DateOfBirth,
+        phone: obj.phone,
+        cellphone: obj.cellphone,
+        vaccinations: obj.vaccinations,
+        dateOfPositiveResult: obj.dateOfPositiveResult,
+        dateOfRecovery: obj.dateOfRecovery,
+    });
+    //   if (employee.vaccinations.length < 4) {
+    //     for (let i = employee.vaccinations.length; i < 4; i++) {
+    //       employee.vaccinations.push({
+    //         dateReceived: null,
+    //         creator: null,
+    //       });
+    //     }
+    //   }
+    try {
+        let newEmp = await employee.save();
+        console.log("the new employee added")
+        return newEmp
+    } catch (err) {
+        console.log(err);
+    }
 };
 // const employeeData = {
 //     fullName: "John Doe",
@@ -171,7 +198,7 @@ const addEmployee = async(obj) => {
 //     dateOfPositiveResult: new Date("2022-02-01"),
 //     dateOfRecovery: new Date("2022-02-15"),
 //   };
-  
+
 //   const employee = new EmployeeModel(employeeData);
 //   employee.save()
 //   .then(savedEmployee => {
@@ -183,12 +210,17 @@ const addEmployee = async(obj) => {
 //     // Error handling logic
 //   });
 
-  
+// const getEmployee =async (ID) => {
+//     console.log("I am in getEmployee ");
+
+//   let employee = await EmployeeModel.findById(ID)
+// return employee
+// };
 
 module.exports = {
-  getEmployees,
-  getEmployee,
-  addEmployee,
+    getEmployees,
+    getEmployee,
+    addEmployee,
 };
 
 
