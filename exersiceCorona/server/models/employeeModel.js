@@ -16,21 +16,33 @@ const EmployeeSchema = new mongoose.Schema({
     cellPhone: String,
     vaccinations: [{
         dateReceived: {
-            type: Date,
-            
+          type: Date,
+          validate: {
+            validator: (value) => {
+              // Validate that the dateReceived is not in the future
+              return value <= new Date();
+            },
+            message: "Date of vaccination must not be in the future",
+          },
         },
         creator: {
-            type: String,
-           
-        }
-    }],
+          type: String,
+          validate: {
+            validator: (value) => {
+              // Validate that the creator is not empty
+              return value.trim().length > 0;
+            },
+            message: "Creator of vaccination certificate is required",
+          },
+        },
+      }],
     dateOfPositiveResult: Date,
     dateOfRecovery: Date,
 });
 
 const employeeSchema = Joi.object({
     fullName: Joi.string().required(),
-    id: Joi.string().required(),
+    id: Joi.string().pattern(/^\d+$/).required(),
     city: Joi.string().required(),
     street: Joi.string().required(),
     HouseNumber: Joi.string().required(),
@@ -39,10 +51,10 @@ const employeeSchema = Joi.object({
     cellPhone: Joi.string().pattern(/^\d{10}$/),
     vaccinations: Joi.array().max(4).items(
         Joi.object({
-            dateReceived: Joi.date(),
-            creator: Joi.string(),
+          dateReceived: Joi.date().max('now').required(),
+          creator: Joi.string().trim().required(),
         })
-    ),
+      ),
     dateOfPositiveResult: Joi.date(),
     dateOfRecovery: Joi.date(),
 });

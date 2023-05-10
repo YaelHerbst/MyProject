@@ -1,10 +1,4 @@
-# choose=0
-# while(int(choose)!=3):
-#    choose=input("please choose 1 or 2 and if you want to exit choose 3")
-#    print(choose)
-#
-#    height=input("enter height of the tower")
-#    width=input("enter width of the tower")
+
 import math
 
 def rectangular_tower():
@@ -16,8 +10,8 @@ def rectangular_tower():
         area = height * width
         print("The area of the rectangular tower is:", area)
     else:
-        scope = 2 * (height + width)
-        print("The scope of the rectangular tower is:", scope)
+        perimeter = 2 * (height + width)
+        print("The scope of the rectangular tower is:", perimeter)
 
 def triangular_tower():
     height = int(input("Enter the height of the tower: "))
@@ -32,20 +26,20 @@ def triangular_tower():
         if width % 2 == 0 or width > 2 * height:
            print("The triangle cannot be printed.")
         else:
-
-           x=int((width-2)/2)
-           y=(height-2)%x
-           space=x+1
-           print((space*" ")+"*")
-           space=space-1
-           for i in range(int(y)):
-               print((space*" ")+"***")
+           group=int((width-2)/2)
+           remainder=(height-2)%group
+           space=group+1
+           print(" "*space+"*")
+           space-=1
+           for i in range(int(remainder)):
+               print(" "*space+"***")
            for i in range(3, width-1,2):
-               for j in range(1,int((height-2)/x)+1):
-                  print((space*" ")+i*"*")
-               space=space-1
-
+               for j in range(1,group):
+                  print(space*" "+i*"*")
+               space-=1
            print(width*"*")
+    else:
+        exit()
 
 while True:
     print("1. Rectangular tower")
