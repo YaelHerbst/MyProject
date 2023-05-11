@@ -8,6 +8,6 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use("/api/employees",EmployeeRouter);
-app.listen(3000,()=>{
-    console.log("listening port 4000 :)");
+app.listen(5000,()=>{
+    console.log("listening port 5000 :)");
 })

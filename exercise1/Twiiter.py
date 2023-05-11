@@ -1,6 +1,6 @@
 
 import math
-
+"""This is the function of the rectangular tower"""
 def rectangular_tower():
     height = int(input("Enter the height of the tower: "))
     width = int(input("Enter the width of the tower: "))
@@ -13,6 +13,7 @@ def rectangular_tower():
         perimeter = 2 * (height + width)
         print("The scope of the rectangular tower is:", perimeter)
 
+"""This is the function of the triple tower"""
 def triangular_tower():
     height = int(input("Enter the height of the tower: "))
     width = int(input("Enter the width of the tower: "))
@@ -26,6 +27,7 @@ def triangular_tower():
         if width % 2 == 0 or width > 2 * height:
            print("The triangle cannot be printed.")
         else:
+
            group=int((width-2)/2)
            remainder=(height-2)%group
            space=group+1

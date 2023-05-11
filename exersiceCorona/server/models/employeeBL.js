@@ -1,153 +1,32 @@
-//--הקוד הראשוני שלא רץ
-// const EmployeeModel = require("./employeeModel");
-
-// const getEmployees = () => {
-//   return new Promise((resolve, reject) => {
-//     EmployeeModel.find({}, (err, data) => {
-//       err && reject(err);
-//       data && resolve(data);
-//     });
-//   });
-// };
-
-// const getEmployee = (ID) => {
-//     return new Promise((resolve, reject) => {
-//       EmployeeModel.findById(ID, (err, data) => {
-//         err && reject(err);
-//         data && resolve(data);
-//       });
-//     });
-//   };
-
-// const addEmployee = async (obj) => {
-//   let employee = new EmployeeModel({
-//     fullName: obj.fullName,
-//     id: obj.id,
-//     city: obj.city,
-//     street: obj.street,
-//     houseNumber: obj.houseNumber,
-//     DateOfBirth: obj.DateOfBirth,
-//     phone: obj.phone,
-//     cellphone: obj.cellphone,
-
-//     //imageUrl: obj.imageUrl,
-
-//     vaccinations: obj.vaccinations,
-//     dateOfPositiveResult: obj.dateOfPositiveResult,
-//     dateOfRecovery: obj.dateOfRecovery,
-//   });
-//   member.dateOfVaccines.length < 4 &&
-//     [...Array(4 - member.dateOfVaccines.length)].map((m, i) => {
-//       member.dateOfVaccines.push(null);
-//       console.log(member.dateOfVaccines.length);
-//       member.makerOfVaccines.push(null);
-//     });
-
-//   member.save((e) => {
-//     if (e) console.log(e + " ???????????");
-//   });
-// };
-
-// module.exports = {
-//     getEmployees,
-//     getEmployee,
-//     addEmployee,
-//   };----------------------------------------------------------
-//הקוד השני שרץ טוב עם exec()אבל לא תופס שגיאות
-// const EmployeeModel = require("./employeeModel");
-
-// const getEmployees = () => {
-//   return EmployeeModel.find().exec();
-// };
-
-// const getEmployee = (ID) => {
-//   return EmployeeModel.findById(ID).exec();
-// };
-
-// const addEmployee = (obj) => {
-//   let employee = new EmployeeModel({
-//     fullName: obj.fullName,
-//     id: obj.id,
-//     city: obj.city,
-//     street: obj.street,
-//     houseNumber: obj.houseNumber,
-//     DateOfBirth: obj.DateOfBirth,
-//     phone: obj.phone,
-//     cellphone: obj.cellphone,
-//     vaccinations: obj.vaccinations,
-//     dateOfPositiveResult: obj.dateOfPositiveResult,
-//     dateOfRecovery: obj.dateOfRecovery,
-//   });
-
-//   if (employee.vaccinations.length < 4) {
-//     for (let i = employee.vaccinations.length; i < 4; i++) {
-//       employee.vaccinations.push({
-//         dateReceived: null,
-//         creator: null,
-//       });
-//     }
-//   }
-
-//   return employee.save();
-// };
-
-// module.exports = {
-//   getEmployees,
-//   getEmployee,
-//   addEmployee,
-// };----------------------------
 const EmployeeModel = require("./employeeModel");
-
-const getEmployees = () => {
-    return EmployeeModel.find().exec()
-        .catch((err) => {
-            // Handle the error here
-            console.error("Error retrieving employees:", err);
-            throw err; // Optional: rethrow the error to propagate it further
-        });
+const moment = require('moment');
 
 
-    // return new Promise((resolve, reject) => {
-    //     EmployeeModel.find({}, (err, data) => {
-    //       err && reject(err);
-    //       data && resolve(data);
-    //     });
-    //   });
+const getEmployees = async () => {
+    try {
+        const employees = await EmployeeModel.find().exec();
+        return employees;
+    } catch (err) {
+        
+        console.error("Error retrieving employees:", err);
+        throw err; 
+    }
 };
+
 
 const getEmployee = async (ID) => {
-    console.log("I am in getEmployee ");
+    console.log("Entering getEmployee");
     try {
-        let employee = await EmployeeModel.findById(ID)
-        return employee
+        const employee = await EmployeeModel.findById(ID);
+        if (!employee) {
+            throw new Error(`Employee with ID ${ID} not found`);
+        }
+        return employee;
     } catch (error) {
-        console.log(error);
+        console.error("Error retrieving employee:", error);
+        throw error;
     }
-
 };
-// , (err, employee) => {
-// return
-// if (err) {
-//   console.error(err);
-//   return res.status(500).send('Internal Server Error');
-// }
-
-// if (!employee) {
-//   return res.status(404).send('Employee not found');
-// }
-
-// Employee found, proceed with further processing
-// res.send(employee);
-//   }).exec().then((employee) => {
-//     // Handle the found employee here
-//     console.log("Found employee:", employee);
-//     return employee;
-//   })
-//     .catch((err) => {
-//       // Handle the error here
-//       console.error("Error retrieving employee:", err);
-//       throw err; // Optional: rethrow the error to propagate it further
-//     });
 
 
 const addEmployee = async (obj) => {
@@ -157,65 +36,22 @@ const addEmployee = async (obj) => {
         city: obj.city,
         street: obj.street,
         houseNumber: obj.houseNumber,
-        DateOfBirth: obj.DateOfBirth,
+        DateOfBirth: moment(obj.DateOfBirth),
         phone: obj.phone,
         cellphone: obj.cellphone,
         vaccinations: obj.vaccinations,
-        dateOfPositiveResult: obj.dateOfPositiveResult,
         dateOfRecovery: obj.dateOfRecovery,
+        dateOfPositiveResult: obj.dateOfPositiveResult,
     });
-    //   if (employee.vaccinations.length < 4) {
-    //     for (let i = employee.vaccinations.length; i < 4; i++) {
-    //       employee.vaccinations.push({
-    //         dateReceived: null,
-    //         creator: null,
-    //       });
-    //     }
-    //   }
+   
     try {
         let newEmp = await employee.save();
         console.log("the new employee added")
-        return newEmp
+        return newEmp;
     } catch (err) {
         console.log(err);
     }
 };
-// const employeeData = {
-//     fullName: "John Doe",
-//     id: "123456789",
-//     city: "New York",
-//     street: "123 Main St",
-//     HouseNumber: "1A",
-//     DateOfBirth: new Date("1990-01-01"),
-//     phone: "1234567890",
-//     cellPhone: "9876543210",
-//     vaccinations: [
-//       {
-//         dateReceived: new Date("2022-01-01"),
-//         creator: "Doctor A",
-//       },
-//     ],
-//     dateOfPositiveResult: new Date("2022-02-01"),
-//     dateOfRecovery: new Date("2022-02-15"),
-//   };
-
-//   const employee = new EmployeeModel(employeeData);
-//   employee.save()
-//   .then(savedEmployee => {
-//     console.log("Employee saved successfully:", savedEmployee);
-//     // Additional logic after saving the employee
-//   })
-//   .catch(error => {
-//     console.error("Error saving employee:", error);
-//     // Error handling logic
-//   });
-
-// const getEmployee =async (ID) => {
-//     console.log("I am in getEmployee ");
-
-//   let employee = await EmployeeModel.findById(ID)
-// return employee
-// };
 
 module.exports = {
     getEmployees,
