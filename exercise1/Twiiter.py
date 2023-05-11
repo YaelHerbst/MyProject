@@ -1,4 +1,3 @@
-
 import math
 """This is the function of the rectangular tower"""
 def rectangular_tower():
