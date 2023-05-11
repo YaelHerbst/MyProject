@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const multer = require("multer");
 const app=express();
 require("./configs/database")
 const EmployeeRouter =require("./routes/employeeRouter")

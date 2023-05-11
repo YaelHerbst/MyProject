@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const { string } = require("joi");
+//const multer = require("multer");
+
+
+
 
 const EmployeeSchema = new mongoose.Schema({
     fullName: String,
@@ -12,9 +16,9 @@ const EmployeeSchema = new mongoose.Schema({
     city: String,
     street: String,
     HouseNumber: String,
-    DateOfBirth: Date,
+    DateOfBirth:String,
     phone: String,
-    cellPhone: String,
+    cellphone:String,
     dateOfPositiveResult: Date,
           dateOfRecovery: Date,
     vaccinations: [{
@@ -39,12 +43,16 @@ const EmployeeSchema = new mongoose.Schema({
           },
       },
       }],
+      // image: {
+      //   type: String,
+      //   required: true,
+      // },
           
 });
 
 const employeeSchema = Joi.object({
     fullName: Joi.string().required(),
-    id: Joi.string().pattern(/^\d+$/).required(),
+    id: Joi.string().pattern(/^\d+$/).pattern(/^\d{9}$/).required(),
     city: Joi.string().required(),
     street: Joi.string().required(),
     HouseNumber: Joi.string().required(),
@@ -59,6 +67,7 @@ const employeeSchema = Joi.object({
           creator: Joi.string().trim(),
            })
           ),
+          // image: Joi.string(),
 });
 
 const EmployeeModel = mongoose.model("Employee", EmployeeSchema);

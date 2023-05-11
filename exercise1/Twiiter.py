@@ -27,7 +27,6 @@ def triangular_tower():
         if width % 2 == 0 or width > 2 * height:
            print("The triangle cannot be printed.")
         else:
-
            group=int((width-2)/2)
            remainder=(height-2)%group
            space=group+1

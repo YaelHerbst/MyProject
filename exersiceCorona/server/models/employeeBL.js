@@ -1,6 +1,5 @@
 const EmployeeModel = require("./employeeModel");
-const moment = require('moment');
-
+//const multer = require("multer");
 
 const getEmployees = async () => {
     try {
@@ -36,12 +35,13 @@ const addEmployee = async (obj) => {
         city: obj.city,
         street: obj.street,
         houseNumber: obj.houseNumber,
-        DateOfBirth: moment(obj.DateOfBirth),
+        DateOfBirth: obj.DateOfBirth,
         phone: obj.phone,
         cellphone: obj.cellphone,
         vaccinations: obj.vaccinations,
         dateOfRecovery: obj.dateOfRecovery,
         dateOfPositiveResult: obj.dateOfPositiveResult,
+        // image: image ? image.filename : null,
     });
    
     try {
